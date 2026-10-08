@@ -52,8 +52,8 @@ function getAppHTML() {
     <header class="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 sm:px-6">
       <div class="max-w-xl mx-auto flex items-center justify-between">
         <div class="flex items-center space-x-3">
-          <div class="relative w-14 h-14 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-400 via-purple-500 to-indigo-500 shadow-xl shadow-purple-950/70 flex-shrink-0 flex items-center justify-center overflow-hidden bg-slate-950">
-            <img src="/logo.svg" alt="Logo Fuerza Espiritual" class="w-full h-full object-contain rounded-xl bg-slate-950" />
+          <div class="relative w-14 h-14 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-400 via-purple-500 to-indigo-500 shadow-xl shadow-purple-950/70 flex-shrink-0 flex items-center justify-center">
+            <img src="/logo.jpg" alt="Logo Fuerza Espiritual" class="w-full h-full object-cover rounded-xl bg-slate-950" />
           </div>
 
           <div>
@@ -63,7 +63,7 @@ function getAppHTML() {
         </div>
 
         <div class="flex items-center gap-1.5">
-          <button id="btnInstallApp" title="Instalar en celular" class="flex items-center gap-1 text-xs font-semibold bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/40 px-2.5 py-1.5 rounded-lg transition-colors">
+          <button id="btnInstallApp" title="Instalar en celular" class="flex items-center gap-1 text-xs font-semibold bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 rounded-xl px-2 py-1.5 transition-colors">
             <i data-lucide="download" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline">Instalar</span>
           </button>
@@ -97,7 +97,7 @@ function getAppHTML() {
           </button>
         </div>
 
-        <div id="quoteCardContainer" class="relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-purple-900/70 via-indigo-900/60 to-slate-900 border border-purple-500/30 shadow-2xl shadow-purple-950/50 flex flex-col justify-between min-h-[360px] transition-all duration-300">
+        <div id="quoteCardContainer" class="relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-purple-900/70 via-indigo-900/60 to-slate-900 border border-purple-500/30 shadow-[0_30px_80px_rgba(76,29,149,0.45)] flex flex-col justify-between">
           <div class="absolute -top-16 -right-16 w-44 h-44 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
           <div class="absolute -bottom-16 -left-16 w-44 h-44 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -127,25 +127,25 @@ function getAppHTML() {
           </div>
 
           <div class="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between gap-2">
-            <button id="btnFavQuote" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white transition-all active:scale-95 backdrop-blur-sm">
+            <button id="btnFavQuote" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white transition-all active:scale-95 backdrop-blur-md">
               <i id="favIcon" data-lucide="heart" class="w-4 h-4"></i>
               <span id="favText">Guardar</span>
             </button>
 
             <div class="flex items-center gap-1.5">
-              <button id="btnShareQuote" class="flex items-center gap-1 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition-all active:scale-95 shadow-md shadow-emerald-950/40">
+              <button id="btnShareQuote" class="flex items-center gap-1 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition-all active:scale-95 shadow-lg shadow-emerald-900/30">
                 <i data-lucide="message-circle" class="w-4 h-4"></i>
                 <span>WhatsApp</span>
               </button>
 
-              <button id="btnDownloadQuote" title="Descargar como imagen para Estados" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95 backdrop-blur-sm">
+              <button id="btnDownloadQuote" title="Descargar como imagen para Estados" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95 backdrop-blur-md">
                 <i data-lucide="download" class="w-4 h-4"></i>
               </button>
             </div>
           </div>
         </div>
 
-        <button id="btnRandomQuote" class="w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 hover:opacity-95 text-white font-bold py-3.5 px-5 rounded-2xl shadow-lg shadow-purple-900/40 transition-all flex items-center justify-center gap-2 text-sm active:scale-[0.99]">
+        <button id="btnRandomQuote" class="w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 hover:opacity-95 text-white font-bold py-3.5 px-5 rounded-2xl shadow-lg shadow-purple-900/40 transition-all active:scale-[0.99] flex items-center justify-center gap-2">
           <i data-lucide="sparkle" class="w-4 h-4 animate-spin" style="animation-duration: 4s;"></i>
           <span>Descubrir Otra Frase</span>
         </button>
@@ -196,7 +196,7 @@ function getAppHTML() {
           <div class="py-4 flex flex-col items-center justify-center">
             <div class="relative w-48 h-48 flex items-center justify-center">
               <div id="breathePulseRing" class="absolute inset-0 rounded-full bg-purple-500/20 blur-xl"></div>
-              <div id="breatheMainCircle" class="w-36 h-36 rounded-full bg-gradient-to-tr from-purple-600 via-indigo-500 to-emerald-400 flex flex-col items-center justify-center text-white shadow-xl transition-transform duration-1000">
+              <div id="breatheMainCircle" class="w-36 h-36 rounded-full bg-gradient-to-tr from-purple-600 via-indigo-500 to-emerald-400 flex flex-col items-center justify-center text-white shadow-[0_20px_60px_rgba(120,119,198,0.45)] transition-transform duration-1000 ease-in-out">
                 <span id="breathePhaseText" class="text-sm font-extrabold uppercase tracking-widest">Inhala</span>
                 <span id="breatheSecondsCount" class="text-2xl font-black mt-0.5">4</span>
               </div>
@@ -255,16 +255,16 @@ function getAppHTML() {
           <div class="space-y-3">
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-1">Tu frase o afirmación positiva *</label>
-              <textarea id="customQuoteInput" rows="3" placeholder="Ej. Hoy elijo confiar en mi camino y recordar lo fuerte que soy..." class="w-full text-xs sm:text-sm px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"></textarea>
+              <textarea id="customQuoteInput" rows="3" placeholder="Ej. Hoy elijo confiar en mi camino y recordar lo fuerte que soy..." class="w-full text-xs sm:text-sm px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50"></textarea>
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-1">Firma / Autor (o déjalo como 'Yo')</label>
-              <input type="text" id="customAuthorInput" placeholder="Ej. Mi yo del futuro, Celeste..." class="w-full text-xs sm:text-sm px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+              <input type="text" id="customAuthorInput" placeholder="Ej. Mi yo del futuro, Celeste..." class="w-full text-xs sm:text-sm px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
             </div>
           </div>
 
-          <button id="btnSaveCustomAffirmation" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md shadow-purple-950 transition-all">
+          <button id="btnSaveCustomAffirmation" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-purple-900/30">
             <i data-lucide="plus-circle" class="w-4 h-4"></i> Guardar mi afirmación
           </button>
         </div>
@@ -456,7 +456,7 @@ function updateQuoteCardContent(quote) {
 function toggleCardTheme() {
   currentGradientIndex = (currentGradientIndex + 1) % cardGradients.length;
   const container = document.getElementById('quoteCardContainer');
-  container.className = `relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-br ${cardGradients[currentGradientIndex]} border shadow-2xl shadow-purple-950/50 flex flex-col justify-between min-h-[360px] transition-all duration-500`;
+  container.className = `relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-br ${cardGradients[currentGradientIndex]} border shadow-2xl shadow-purple-950/50 flex flex-col justify-between`;
 }
 
 function updateFavButtonState() {
@@ -1038,7 +1038,7 @@ function showToast(message, type = 'info') {
       ? 'bg-emerald-950/90 text-emerald-200 border border-emerald-800'
       : 'bg-slate-900/90 text-slate-100 border border-slate-700';
 
-  toast.className = `${bg} backdrop-blur-md px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto`;
+  toast.className = `${bg} backdrop-blur-md px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-none`;
 
   const icon = type === 'error' ? 'alert-circle' : type === 'success' ? 'check' : 'sparkles';
   toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4"></i><span>${message}</span>`;
