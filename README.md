@@ -40,4 +40,4 @@ Puedes desplegarlo en:
 - GitHub Pages
 
 ## Nota
-El logo base viene en `public/logo.svg`. Si quieres reemplazarlo por tu logo final, solo cambia ese archivo o agrega tu `logo.jpg` o `logo.png`.
+El logo base viene en `public/logo.jpg`. Si quieres reemplazarlo por tu logo final, solo cambia ese archivo o agrega tu `logo.jpg` o `logo.png`.
