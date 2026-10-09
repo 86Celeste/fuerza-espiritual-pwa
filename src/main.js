@@ -47,6 +47,35 @@ let rainGainNode = null;
 let isRainPlaying = false;
 let dropletTimer = null;
 
+function getAllAvailableQuotes() {
+  return [...quoteDatabase, ...customAffirmations];
+}
+
+function getFilteredQuotes(searchTerm = '') {
+  const pool = getAllAvailableQuotes();
+  const term = searchTerm.trim().toLowerCase();
+
+  if (!term) {
+    if (currentCategory === 'todas') return pool;
+    return pool.filter((quote) => quote.category === currentCategory);
+  }
+
+  return pool.filter((quote) => {
+    const matchesCategory = currentCategory === 'todas' || quote.category === currentCategory;
+    if (!matchesCategory) return false;
+
+    const searchableText = [
+      quote.text,
+      quote.author,
+      quote.category,
+      quote.author ? quote.author.toLowerCase() : '',
+      quote.text ? quote.text.toLowerCase() : ''
+    ].join(' ').toLowerCase();
+
+    return searchableText.includes(term);
+  });
+}
+
 function getAppHTML() {
   return `
     <header class="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 sm:px-6">
@@ -63,7 +92,7 @@ function getAppHTML() {
         </div>
 
         <div class="flex items-center gap-1.5">
-          <button id="btnInstallApp" title="Instalar en celular" class="flex items-center gap-1 text-xs font-semibold bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 rounded-xl px-2 py-1.5 transition-colors">
+          <button id="btnInstallApp" title="Instalar en celular" class="flex items-center gap-1 text-xs font-semibold bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/20 rounded-lg px-2.5 py-2 transition-colors">
             <i data-lucide="download" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline">Instalar</span>
           </button>
@@ -76,6 +105,18 @@ function getAppHTML() {
 
     <main class="flex-1 overflow-y-auto pb-24 max-w-xl w-full mx-auto p-4 sm:p-5 space-y-5">
       <section id="view-quotes" class="tab-view block space-y-4">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400"></i>
+          </div>
+          <input
+            id="quoteSearchInput"
+            type="search"
+            placeholder="Buscar frase, autor o palabra clave..."
+            class="w-full bg-slate-900 border border-slate-700 rounded-2xl pl-10 pr-3 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+          />
+        </div>
+
         <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1 pt-0.5">
           <button data-category="todas" class="cat-pill active-cat text-xs font-semibold px-3 py-1.5 rounded-full bg-purple-600 text-white whitespace-nowrap transition-all shadow-sm">
             ✨ Todas
@@ -97,7 +138,7 @@ function getAppHTML() {
           </button>
         </div>
 
-        <div id="quoteCardContainer" class="relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-purple-900/70 via-indigo-900/60 to-slate-900 border border-purple-500/30 shadow-[0_30px_80px_rgba(76,29,149,0.45)] flex flex-col justify-between">
+        <div id="quoteCardContainer" class="relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-purple-900/70 via-indigo-900/60 to-slate-900 border border-purple-500/30 shadow-[0_20px_60px_rgba(168,85,247,0.3)] flex flex-col justify-between">
           <div class="absolute -top-16 -right-16 w-44 h-44 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
           <div class="absolute -bottom-16 -left-16 w-44 h-44 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -133,7 +174,7 @@ function getAppHTML() {
             </button>
 
             <div class="flex items-center gap-1.5">
-              <button id="btnShareQuote" class="flex items-center gap-1 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition-all active:scale-95 shadow-lg shadow-emerald-900/30">
+              <button id="btnShareQuote" class="flex items-center gap-1 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition-all active:scale-95 shadow-lg shadow-emerald-900/40">
                 <i data-lucide="message-circle" class="w-4 h-4"></i>
                 <span>WhatsApp</span>
               </button>
@@ -145,7 +186,7 @@ function getAppHTML() {
           </div>
         </div>
 
-        <button id="btnRandomQuote" class="w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 hover:opacity-95 text-white font-bold py-3.5 px-5 rounded-2xl shadow-lg shadow-purple-900/40 transition-all active:scale-[0.99] flex items-center justify-center gap-2">
+        <button id="btnRandomQuote" class="w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 hover:opacity-95 text-white font-bold py-3.5 px-5 rounded-2xl shadow-lg shadow-purple-900/50 transition-all active:scale-[0.99]">
           <i data-lucide="sparkle" class="w-4 h-4 animate-spin" style="animation-duration: 4s;"></i>
           <span>Descubrir Otra Frase</span>
         </button>
@@ -196,7 +237,7 @@ function getAppHTML() {
           <div class="py-4 flex flex-col items-center justify-center">
             <div class="relative w-48 h-48 flex items-center justify-center">
               <div id="breathePulseRing" class="absolute inset-0 rounded-full bg-purple-500/20 blur-xl"></div>
-              <div id="breatheMainCircle" class="w-36 h-36 rounded-full bg-gradient-to-tr from-purple-600 via-indigo-500 to-emerald-400 flex flex-col items-center justify-center text-white shadow-[0_20px_60px_rgba(120,119,198,0.45)] transition-transform duration-1000 ease-in-out">
+              <div id="breatheMainCircle" class="w-36 h-36 rounded-full bg-gradient-to-tr from-purple-600 via-indigo-500 to-emerald-400 flex flex-col items-center justify-center text-white shadow-[0_0_50px_rgba(168,85,247,0.45)]">
                 <span id="breathePhaseText" class="text-sm font-extrabold uppercase tracking-widest">Inhala</span>
                 <span id="breatheSecondsCount" class="text-2xl font-black mt-0.5">4</span>
               </div>
@@ -222,7 +263,7 @@ function getAppHTML() {
                 </div>
               </div>
 
-              <button id="btnToggleRain" class="flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-xl bg-slate-850 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 transition-all active:scale-95">
+              <button id="btnToggleRain" class="flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-xl bg-slate-850 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30">
                 <i id="rainBtnIcon" data-lucide="play" class="w-3.5 h-3.5"></i>
                 <span id="rainBtnText">Escuchar</span>
               </button>
@@ -255,16 +296,16 @@ function getAppHTML() {
           <div class="space-y-3">
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-1">Tu frase o afirmación positiva *</label>
-              <textarea id="customQuoteInput" rows="3" placeholder="Ej. Hoy elijo confiar en mi camino y recordar lo fuerte que soy..." class="w-full text-xs sm:text-sm px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50"></textarea>
+              <textarea id="customQuoteInput" rows="3" placeholder="Ej. Hoy elijo confiar en mi camino y recordar lo fuerte que soy..." class="w-full text-xs sm:text-sm px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-500"></textarea>
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-1">Firma / Autor (o déjalo como 'Yo')</label>
-              <input type="text" id="customAuthorInput" placeholder="Ej. Mi yo del futuro, Celeste..." class="w-full text-xs sm:text-sm px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50" />
+              <input type="text" id="customAuthorInput" placeholder="Ej. Mi yo del futuro, Celeste..." class="w-full text-xs sm:text-sm px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-500" />
             </div>
           </div>
 
-          <button id="btnSaveCustomAffirmation" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-purple-900/30">
+          <button id="btnSaveCustomAffirmation" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-purple-900/40">
             <i data-lucide="plus-circle" class="w-4 h-4"></i> Guardar mi afirmación
           </button>
         </div>
@@ -316,6 +357,28 @@ function setupEvents() {
       generateRandomQuote(true);
     });
   });
+
+  const searchInput = document.getElementById('quoteSearchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', (event) => {
+      const query = event.target.value;
+      const filtered = getFilteredQuotes(query);
+
+      if (filtered.length === 0) {
+        const textEl = document.getElementById('quoteCardText');
+        const authorEl = document.getElementById('quoteCardAuthor');
+        const categoryEl = document.getElementById('quoteCardCategory');
+
+        if (textEl) textEl.textContent = 'No encontramos frases con ese criterio.';
+        if (authorEl) authorEl.textContent = '— Intenta otra búsqueda';
+        if (categoryEl) categoryEl.textContent = '🔎 Sin resultados';
+        return;
+      }
+
+      const selected = filtered[Math.floor(Math.random() * filtered.length)];
+      displayQuote(selected, true);
+    });
+  }
 
   document.querySelectorAll('.mood-btn').forEach((button) => {
     button.addEventListener('click', () => {
@@ -394,21 +457,27 @@ function initAppState() {
   switchTab('quotes');
 }
 
-function getAllAvailableQuotes() {
-  return [...quoteDatabase, ...customAffirmations];
-}
-
 function generateRandomQuote(animate = true) {
-  let pool = getAllAvailableQuotes();
-  if (currentCategory !== 'todas') {
-    pool = pool.filter((quote) => quote.category === currentCategory);
-  }
+  const searchValue = document.getElementById('quoteSearchInput')?.value || '';
+  const pool = getFilteredQuotes(searchValue);
+
   if (pool.length === 0) {
-    pool = quoteDatabase;
+    const fallback = getAllAvailableQuotes().filter((quote) => currentCategory === 'todas' || quote.category === currentCategory);
+    if (fallback.length === 0) {
+      const selected = quoteDatabase[0];
+      displayQuote(selected, animate);
+      return;
+    }
+    const selected = fallback[Math.floor(Math.random() * fallback.length)];
+    displayQuote(selected, animate);
+    return;
   }
 
   if (currentQuote && pool.length > 1) {
-    pool = pool.filter((quote) => quote.id !== currentQuote.id);
+    const withoutCurrent = pool.filter((quote) => quote.id !== currentQuote.id);
+    const selected = withoutCurrent.length ? withoutCurrent[Math.floor(Math.random() * withoutCurrent.length)] : pool[0];
+    displayQuote(selected, animate);
+    return;
   }
 
   const selected = pool[Math.floor(Math.random() * pool.length)];
