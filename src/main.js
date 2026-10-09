@@ -1,4 +1,8 @@
 import './style.css';
+import { inject } from '@vercel/analytics';
+
+// Initialize Vercel Web Analytics
+inject();
 
 const quoteDatabase = [
   { id: 'q1', text: 'Date permiso para no tener todo resuelto hoy. El progreso sigue siendo progreso, por pequeño que parezca.', author: 'Amor Propio', category: 'amor_propio' },
