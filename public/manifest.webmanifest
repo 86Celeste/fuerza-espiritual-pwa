@@ -1,31 +1,36 @@
 {
-  "id": "/fuerza-espiritual-pwa/",
   "name": "Fuerza Espiritual",
   "short_name": "Fuerza Espiritual",
-  "description": "Inspiración, motivación y paz para tu alma",
-  "start_url": "/fuerza-espiritual-pwa/",
-  "scope": "/fuerza-espiritual-pwa/",
+  "description": "Frases, afirmaciones, respiración guiada y calma para cada día.",
+  "lang": "es-AR",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#020617",
   "theme_color": "#4f46e5",
-  "orientation": "portrait",
-  "lang": "es",
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/fuerza-espiritual-pwa/icon-192.png",
+      "src": "./icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/fuerza-espiritual-pwa/icon-512.png",
+      "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/fuerza-espiritual-pwa/icon-512-maskable.png",
+      "src": "./icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
