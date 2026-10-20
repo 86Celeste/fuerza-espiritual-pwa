@@ -15,5 +15,42 @@
 </script>
 <script>tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:{50:'#f5f3ff',100:'#ede9fe',500:'#8b5cf6',600:'#7c3aed',700:'#6d28d9'}}}}}
 </script>
-<style>@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,500;1,600&display=swap');body{font-family:'Plus Jakarta Sans',sans-serif;-webkit-tap-highlight-color:transparent}.font-serif-quote{font-family:'Playfair Display',serif}.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style></head><body class="h-full bg-slate-950 text-slate-100 selection:bg-purple-500 selection:text-white">
-<div id="app"></div><div id="toastContainer" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none px-4 w-full max-w-sm"></div><canvas id="quoteCanvas" class="hidden"></canvas><script type="module" src="/src/main.js"></script><script>if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(console.warn))}</script></body></html>
+<style>@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,500;1,600&display=swap');
+ body{font-family:'Plus Jakarta Sans',sans-serif;-webkit-tap-highlight-color:transparent}.font-serif-quote{font-family:'Playfair Display',serif}.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style></head><body class="h-full bg-slate-950 text-slate-100 selection:bg-purple-500 selection:text-white">
+<div id="app"></div><div id="toastContainer" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none px-4 w-full max-w-sm"></div><canvas id="quoteCanvas" class="hidden"></canvas><script type="module" src="/src/main.js"></script><script>if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(console.warn))}</script>
+<script>
+  let deferredPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    deferredPrompt = event;
+
+    const btn = document.getElementById('install-btn');
+    if (btn) {
+      btn.hidden = false;
+      btn.addEventListener('click', async () => {
+        btn.hidden = true;
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      }, { once: true });
+    }
+  });
+
+  window.addEventListener('appinstalled', () => {
+    console.log('PWA instalada');
+  });
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+    });
+  }
+</script>
+
+<button id="install-btn" hidden
+  style="position:fixed;right:16px;bottom:90px;z-index:9999;padding:12px 16px;border:0;border-radius:999px;background:#7c3aed;color:#fff;font-weight:700;box-shadow:0 10px 25px rgba(124,58,237,.35);">
+  Instalar app
+</button>
+ </body>
+</html>
